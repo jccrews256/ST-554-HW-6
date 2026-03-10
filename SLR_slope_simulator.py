@@ -104,7 +104,11 @@ class SLR_slope_simulator:
 
         # Rendering the histogram
         plt.hist(self.slopes)
+        plt.xlabel("Slope Estimate")
+        plt.ylabel("Frequency")
+        plt.title("Simulated Sampling Distribution of Slope Estimate")
         plt.show()
+
 
 
 
