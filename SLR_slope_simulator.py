@@ -108,9 +108,9 @@ class SLR_slope_simulator:
     def plot_sampling_distribution(self):
         # Confirming the slopes attribute is not empty
         if len(self.slopes) == 0:
-            raise ValueError("The slopes attribute is empty. run_simulations() \
-                              must be run before plot_sampling_distribution() \
-                              is called.")
+            raise ValueError("The slopes attribute is empty. run_simulations() 
+                                must be run before plot_sampling_distribution()
+                                is called.")
 
         # Rendering the histogram
         plt.hist(self.slopes)
@@ -124,8 +124,8 @@ class SLR_slope_simulator:
     def find_prob(self, value: float, sided: str = "two-sided"):
         # Confirming the slopes attribute is not empty
         if len(self.slopes) == 0:
-            raise ValueError("The slopes attribute is empty. run_simulations() \
-                              must be run before find_prob \
+            raise ValueError("The slopes attribute is empty. run_simulations()
+                              must be run before find_prob
                               is called.")
 
         # Converting slopes to an array for calculations
@@ -142,13 +142,14 @@ class SLR_slope_simulator:
             else: # case where at or above median
                 prob = 2*np.mean(slopes_array > value)
         else: # Raising error if anything else is passed to sided
-            raise ValueError("sided must be one of 'above', 'below', \
+            raise ValueError("sided must be one of 'above', 'below',
             or 'two-sided'")
 
 
         # Returning the probability
         return prob
             
+
 
 
 
