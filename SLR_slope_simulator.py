@@ -98,8 +98,16 @@ class SLR_slope_simulator:
     def plot_sampling_distribution(self):
         # Confirming the slopes attribute is not empty
         if len(self.slopes) == 0:
-          raise ValueError("The slopes attribute is empty. run_simulations() \
+            raise ValueError("The slopes attribute is empty. run_simulations() \
                               must be run before plot_sampling_distribution() \
                               is called.")
+
+        # Rendering the histogram
+        plt.hist(self.slopes)
+        plt.show()
+
+
+
+
 
 
