@@ -44,7 +44,7 @@ class SLR_slope_simulator:
           self.sigma = sigma
           self.x = x if x is not None else np.array(list(np.linspace(start = 0, 
                         stop = 10, num = 11))*3)
-          self.n = len(x) # Setting n to the length of x
+          self.n = len(self.x) # Setting n to the length of x
           self.rng = default_rng(seed) # Initializing random number generator
           self.slopes = [] # Initially creating an empty list
     
@@ -101,3 +101,4 @@ class SLR_slope_simulator:
           raise ValueError("The slopes attribute is empty. run_simulations() \
                               must be run before plot_sampling_distribution() \
                               is called.")
+
