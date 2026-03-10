@@ -11,28 +11,38 @@ class SLR_slope_simulator:
     true slope beta_1 (defaults to 1). 
     
     Key attributes beyond beta_0 and beta_1:
-      - sigma: the true standard deviation of the random errors; defaults to 1
-      - x: the 1D array of predictor values; defaults to three observations for
+        - sigma: the true standard deviation of the random errors; defaults to 1
+        - x: the 1D array of predictor values; defaults to three observations for
             each integer between 0 and 10 (inclusive)
-      - n: the sample size, equal to the length of x
-      - rng: the random number generator, set to default_rng(32), making results
+        - n: the sample size, equal to the length of x
+        - rng: the random number generator, set to default_rng(32), making results
             results reproducible
-      - slopes: the list of simulated slopes for each model fit
+        - slopes: the list of simulated slopes for each model fit
       
     Methods:
-      - generate_data: a method with no inputs that returns separate 1D arrays
+        - generate_data: a method with no inputs that returns separate 1D arrays
             containing the pre-defined predictor values (x) and generated 
             response values (y) based on preset values for x, beta_0, beta_1,  
             and sigma
-      - fit_slope: a method that takes in two 1D arrays, x and y, and returns
+        - fit_slope: a method that takes in two 1D arrays, x and y, and returns
             the ordinary least squares slope estimate for the simple linear
             regression relating y (response) and x (predictor)
-      - run_simulations: a method that takes in an integer, sims, that is the 
+        - run_simulations: a method that takes in an integer, sims, that is the 
             number of simulated slope estimates that will be generated using 
             generate_data and fit_slope iteratively, thus creating a simulated
             sampling distribution of slopes captured in the slopes attribute; 
             note that the slopes attribute is reset before the new slopes are
             generated
+        - plot_sampling_distribution: a method that returns a histogram of the
+            simulated slope estimates, failing if run_simulations() has not
+            been run yet.
+        - find_prob: a method that returns an estimated one-sided or two-sided
+            probability for the input value, with the probability type dependent
+            on the the sided input; "above" for the probability above, "below"
+            for the probability below, or "two-sided" for the two-sided probability
+            - Note: the two-sided probability is calculated as double the proportion
+                below when value is below the sample median and double the 
+                proportion above when value is above the sample median
     '''
     
     # Initializing the class with initial values for each attribute
@@ -87,7 +97,7 @@ class SLR_slope_simulator:
         self.slopes = []
       
         # Creating a for loop to generate and capture the slopes for each sim
-        for i in range(sims):
+        for _ in range(sims):
           # Generating response values given pre-set x values
           x, y = self.generate_data()
           
@@ -108,6 +118,39 @@ class SLR_slope_simulator:
         plt.ylabel("Frequency")
         plt.title("Simulated Sampling Distribution of Slope Estimate")
         plt.show()
+
+
+    # Creating the find_prob method
+    def find_prob(self, value: float, sided: str = "two-sided"):
+        # Confirming the slopes attribute is not empty
+        if len(self.slopes) == 0:
+            raise ValueError("The slopes attribute is empty. run_simulations() \
+                              must be run before find_prob \
+                              is called.")
+
+        # Converting slopes to an array for calculations
+        slopes_array = np.array(self.slopes)
+
+        # Returning the estimated probability based on sided
+        if sided == "above": # probability above value
+            prob = np.mean(slopes_array > value)
+        elif sided == "below": # probability below value
+            prob = np.mean(slopes_array < value)
+        elif sided == "two-sided": #two-sided probability
+            if value < np.median(slopes_array): # case where below median
+                prob = 2*np.mean(slopes_array < value)
+            else: # case where at or above median
+                prob = 2*np.mean(slopes_array > value)
+        else: # Raising error if anything else is passed to sided
+            raise ValueError("sided must be one of 'above', 'below', \
+            or 'two-sided'")
+
+
+        # Returning the probability
+        return prob
+            
+
+
 
 
 
