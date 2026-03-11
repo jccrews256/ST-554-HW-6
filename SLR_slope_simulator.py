@@ -15,8 +15,8 @@ class SLR_slope_simulator:
         - x: the 1D array of predictor values; defaults to three observations for
             each integer between 0 and 10 (inclusive)
         - n: the sample size, equal to the length of x
-        - rng: the random number generator, set to default_rng(32), making results
-            results reproducible
+        - rng: the random number generator, with seed specified at initialization;
+            seed defaults to 32
         - slopes: the list of simulated slopes for each model fit
       
     Methods:
@@ -173,6 +173,7 @@ def main():
 # Printing out the test results above if this file is run explicitly
 if __name__ == "__main__":
     main()
+
 
 
 
