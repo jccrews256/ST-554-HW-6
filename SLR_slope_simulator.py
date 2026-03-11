@@ -151,7 +151,11 @@ def main():
         np.linspace(start = 0, stop = 10, num = 11))*3), sigma = 1, seed = 10)
     
     # Ensuring correct errors are thrown when run_simulations() hasn't been run
-    test_sim.plot_sampling_distribution()
+    # and moving to the next test
+    try: 
+        test_sim.plot_sampling_distribution()
+    except ValueError as error:
+        print(error)
 
     # Generating 10,000 slope estimates (nothing will print)
     test_sim.run_simulations(10000)
@@ -160,14 +164,15 @@ def main():
     test_sim.plot_sampling_distribution()
 
     # Estimating probability of being more extreme than 2.1
-    test_sim.find_prob(value = 2.1, sided = "two-sided")
+    print(test_sim.find_prob(value = 2.1, sided = "two-sided"))
 
     # Extracting the slopes
-    test_sim.slopes
+    print(test_sim.slopes)
 
 # Printing out the test results above if this file is run explicitly
 if __name__ == "__main__":
     main()
+
 
 
 
