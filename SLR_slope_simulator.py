@@ -168,11 +168,13 @@ def main():
           test_sim.find_prob(value = 2.1, sided = "two-sided"))
 
     # Extracting the slopes
-    print("Slope estimates: \n", test_sim.slopes)
+    print("Number of slope estimates:", len(test_sim.slopes))
+    print("Slope estimates: \n", np.array(test_sim.slopes))
 
 # Printing out the test results above if this file is run explicitly
 if __name__ == "__main__":
     main()
+
 
 
 
