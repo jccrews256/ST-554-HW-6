@@ -155,23 +155,25 @@ def main():
     try: 
         test_sim.plot_sampling_distribution()
     except ValueError as error:
-        print(error)
+        print("Error when running plot_sampling_distribution() too early: \n", error)
 
-    # Generating 10,000 slope estimates (nothing will print)
+    # Generating 10,000 slope estimate (nothing will print)
     test_sim.run_simulations(10000)
 
     # Generating histogram of slope estimates
     test_sim.plot_sampling_distribution()
 
     # Estimating probability of being more extreme than 2.1
-    print(test_sim.find_prob(value = 2.1, sided = "two-sided"))
+    print("Probability of a slope estimate more extreme than 2.1: \n", 
+          test_sim.find_prob(value = 2.1, sided = "two-sided"))
 
     # Extracting the slopes
-    print(test_sim.slopes)
+    print("Slope estimates: \n", test_sim.slopes)
 
 # Printing out the test results above if this file is run explicitly
 if __name__ == "__main__":
     main()
+
 
 
 
