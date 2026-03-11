@@ -144,11 +144,30 @@ class SLR_slope_simulator:
         # Returning the probability
         return prob
             
+# Running tests on class, methods, and attributes
+def main():
+    # Creating an instance of an SLR_slope_simulator object
+    test_sim = SLR_slope_simulator(beta_0 = 12, beta_1 = 2, x = np.array(list(
+        np.linspace(start = 0, stop = 10, num = 11))*3), sigma = 1, seed = 10)
+    
+    # Ensuring correct errors are thrown when run_simulations() hasn't been run
+    test_sim.plot_sampling_distribution()
 
+    # Generating 10,000 slope estimates (nothing will print)
+    test_sim.run_simulations(10000)
 
+    # Generating histogram of slope estimates
+    test_sim.plot_sampling_distribution()
 
+    # Estimating probability of being more extreme than 2.1
+    test_sim.find_prob(value = 2.1, sided = "two-sided")
 
+    # Extracting the slopes
+    test_sim.slopes
 
+# Printing out the test results above if this file is run explicitly
+if __name__ == "__main__":
+    main()
 
 
 
