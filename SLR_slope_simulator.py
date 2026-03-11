@@ -17,7 +17,8 @@ class SLR_slope_simulator:
         - n: the sample size, equal to the length of x
         - rng: the random number generator, with seed specified at initialization;
             seed defaults to 32
-        - slopes: the list of simulated slopes for each model fit
+        - slopes: the simulated slopes for each model fit; will be an empty list
+            if no simulations have been run
       
     Methods:
         - generate_data: a method with no inputs that returns separate 1D arrays
@@ -93,16 +94,16 @@ class SLR_slope_simulator:
       
     # Creating the run_simulations method
     def run_simulations(self, sims: int = 5000):
-        # Clearly out any previous simulations
-        self.slopes = []
+        # Clearly out any previous simulations and converting to array
+        self.slopes = np.zeros(sims)
       
         # Creating a for loop to generate and capture the slopes for each sim
-        for _ in range(sims):
+        for i in range(sims):
           # Generating response values given pre-set x values
           x, y = self.generate_data()
           
           # Capturing the slope coefficient for the SLR fit relating y and x
-          self.slopes.append(self.fit_slope(x, y))
+          self.slopes[i] = self.fit_slope(x, y)
           
     # Creating the plot_sampling_distribution method
     def plot_sampling_distribution(self):
@@ -124,19 +125,16 @@ class SLR_slope_simulator:
         if len(self.slopes) == 0:
             raise ValueError("The slopes attribute is empty. run_simulations() must be run before find_prob is called.")
 
-        # Converting slopes to an array for calculations
-        slopes_array = np.array(self.slopes)
-
         # Returning the estimated probability based on sided
         if sided == "above": # probability above value
-            prob = np.mean(slopes_array > value)
+            prob = np.mean(self.slopes > value)
         elif sided == "below": # probability below value
-            prob = np.mean(slopes_array < value)
+            prob = np.mean(self.slopes < value)
         elif sided == "two-sided": #two-sided probability
-            if value < np.median(slopes_array): # case where below median
-                prob = 2*np.mean(slopes_array < value)
+            if value < np.median(self.slopes): # case where below median
+                prob = 2*np.mean(self.slopes < value)
             else: # case where at or above median
-                prob = 2*np.mean(slopes_array > value)
+                prob = 2*np.mean(self.slopes > value)
         else: # Raising error if anything else is passed to sided
             raise ValueError("sided must be one of 'above', 'below', or 'two-sided'")
 
@@ -169,11 +167,12 @@ def main():
 
     # Extracting the slopes
     print("Number of slope estimates:", len(test_sim.slopes))
-    print("Slope estimates: \n", np.array(test_sim.slopes))
+    print("Slope estimates: \n", test_sim.slopes)
 
 # Printing out the test results above if this file is run explicitly
 if __name__ == "__main__":
     main()
+
 
 
 
